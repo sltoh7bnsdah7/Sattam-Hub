@@ -225,7 +225,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For issues and questions:
 - Open an issue on GitHub
-- Contact: [your-email@example.com]
+- Contact: [turki9.abdullah9@gmail.com]
 
 ## 🗺️ Roadmap
 
@@ -252,4 +252,5 @@ _Add screenshots here after building the app_
 
 **Version**: 1.0.0  
 **Last Updated**: November 5, 2025
+
 

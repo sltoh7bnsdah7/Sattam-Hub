@@ -1,0 +1,48 @@
+# Cursor Project Rules — Sattam Hub (Android + Supabase)
+
+You are working in an Android app built with Kotlin, Jetpack Compose (Material 3), Hilt DI, MVVM + Clean Architecture principles, and Supabase (PostgreSQL/Auth/Realtime/Storage/Functions).
+
+## Non‑negotiables (security + safety)
+- Never add or output real secrets. Never ask to commit secrets.
+- Treat these as secrets and NEVER inline them in code or docs: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `GEMINI_API_KEY`, any JWTs.
+- App reads Supabase URL/key from `local.properties` into `BuildConfig` fields (`BuildConfig.SUPABASE_URL`, `BuildConfig.SUPABASE_ANON_KEY`). Preserve this pattern.
+- Supabase Edge Functions must use env vars (`Deno.env.get(...)`) and must not hardcode keys.
+
+## Architecture + folder conventions (follow existing code)
+- Keep current package structure under `app/src/main/java/com/example/sattam_hub/`:
+  - `data/model` for DTO/data models
+  - `data/repository` for data access (Supabase/PostgREST/Auth)
+  - `di` for Hilt modules
+  - `navigation` for routes + graph
+  - `ui/**` for Compose screens/components by feature/role
+  - `util/**` for small shared utilities
+- MVVM rule: UI composables are thin; state + side effects live in ViewModels; network/DB logic lives in repositories.
+- Do not introduce a new architecture layer unless required. Prefer incremental refactors.
+
+## Kotlin/Compose best practices for this repo
+- Prefer immutable UI state models and `StateFlow`/`Flow` collection in composables.
+- Avoid doing network calls directly inside composables; use ViewModel.
+- Keep navigation arguments simple and typed; reuse `Screen` routes.
+- Maintain RTL and localization support; do not hardcode user-facing strings—use existing string/locale utilities or `strings.xml` patterns where present.
+
+## Supabase usage rules (Android)
+- Use injected Supabase plugins from `SupabaseModule` (`Auth`, `Postgrest`, `Realtime`, `Storage`, `Functions`) instead of creating new clients ad-hoc.
+- Repository functions should return `Result<T>` (matches existing style) and handle exceptions.
+- Be mindful of RLS: "success" can still mean 0 rows affected. If an operation’s correctness matters, verify like `EventRepository.deleteEvent()` does.
+- Avoid breaking schema assumptions. If a change requires DB schema edits, add a SQL script under `database/` and mention required Supabase SQL steps.
+
+## Supabase Edge Functions rules (Deno/TypeScript)
+- Keep CORS handling (OPTIONS preflight) and consistent JSON error responses.
+- Validate inputs; return 400 for client errors and 500 for unexpected failures.
+- Do not change runtime imports casually (Deno std version, `@supabase/supabase-js` import style) unless necessary.
+
+## Build & test commands (Windows)
+- Prefer these commands when suggesting/verifying builds:
+  - Unit tests: `./gradlew test` (PowerShell may also use `./gradlew.bat test`)
+  - Lint: `./gradlew lint`
+  - Debug build: `./gradlew assembleDebug`
+
+## Change hygiene
+- Make small, reviewable diffs.
+- Update all call sites when changing a model, route, or repository API.
+- Do not edit generated files (`app/build/**`, `**/intermediates/**`).

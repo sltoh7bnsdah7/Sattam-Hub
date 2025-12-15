@@ -236,21 +236,17 @@ For issues and questions:
 - [ ] Feedback and rating system
 
 ### Phase 3 (Future)
-- [ ] SMS notifications
-- [ ] Push notifications
+
 - [ ] AI-powered event recommendations
-- [ ] Mobile app for iOS
+- [ ] Mobile app 
 - [ ] Certificate generation
 
-## 📸 Screenshots
 
-_Add screenshots here after building the app_
-
----
 
 **Built with ❤️ for university communities**
 
 **Version**: 1.0.0  
 **Last Updated**: November 5, 2025
+
 
 
